@@ -50,8 +50,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteOne = exports.updateOne = exports.getOne = exports.getMany = exports.createUser = void 0;
+exports.authenticate = exports.deleteOne = exports.updateOne = exports.getOne = exports.getMany = exports.createUser = void 0;
 var users_model_1 = __importDefault(require("../models/users.model"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var config_1 = __importDefault(require("../config"));
 var usermodel = new users_model_1.default();
 var createUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var user, newUser, error_1;
@@ -177,3 +179,34 @@ var deleteOne = function (req, res, next) { return __awaiter(void 0, void 0, voi
     });
 }); };
 exports.deleteOne = deleteOne;
+var authenticate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, user, token, error_6;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                _a = req.body, email = _a.email, password = _a.password;
+                return [4 /*yield*/, usermodel.authenticate(email, password)];
+            case 1:
+                user = _b.sent();
+                token = jsonwebtoken_1.default.sign({ user: user }, config_1.default.token);
+                if (!user) {
+                    return [2 /*return*/, res.status(401).json({
+                            status: 'error',
+                            messagae: 'username and password do not match'
+                        })];
+                }
+                return [2 /*return*/, res.status(200).json({
+                        status: 'success',
+                        data: __assign(__assign({}, user), { token: token }),
+                        messgae: 'authenticated successfully'
+                    })];
+            case 2:
+                error_6 = _b.sent();
+                next(error_6);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.authenticate = authenticate;

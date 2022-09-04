@@ -54,33 +54,25 @@ exports.deleteOne = exports.updateOne = exports.getOne = exports.getMany = expor
 var orders_model_1 = __importDefault(require("../models/orders.model"));
 var ordermodel = new orders_model_1.default();
 var createOrder = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var order, newOrder, error_1;
+    var newOrder, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                order = {
-                    productId: req.body.productid,
-                    quantity: req.body.quantity,
-                    userId: req.body.userid,
-                    status: req.body.status
-                };
-                _a.label = 1;
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, ordermodel.createOrder(req.body)];
             case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, ordermodel.createOrder(order)];
-            case 2:
                 newOrder = _a.sent();
                 res.json({
                     status: 'success',
                     data: __assign({}, newOrder),
                     message: 'order created successfully'
                 });
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 3];
+            case 2:
                 error_1 = _a.sent();
                 next(error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -106,22 +98,30 @@ var getMany = function (req, res, next) { return __awaiter(void 0, void 0, void 
 }); };
 exports.getMany = getMany;
 var getOne = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, order;
+    var id, order, error_3;
     return __generator(this, function (_a) {
-        id = req.params.id;
-        try {
-            order = ordermodel.getOne(id);
-            res.json(order);
+        switch (_a.label) {
+            case 0:
+                id = req.params.id;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, ordermodel.getOne(id)];
+            case 2:
+                order = _a.sent();
+                res.json(order);
+                return [3 /*break*/, 4];
+            case 3:
+                error_3 = _a.sent();
+                next(error_3);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
-        catch (error) {
-            next(error);
-        }
-        return [2 /*return*/];
     });
 }); };
 exports.getOne = getOne;
 var updateOne = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var order, newOrder, error_3;
+    var order, newOrder, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -144,8 +144,8 @@ var updateOne = function (req, res, next) { return __awaiter(void 0, void 0, voi
                 });
                 return [3 /*break*/, 4];
             case 3:
-                error_3 = _a.sent();
-                next(error_3);
+                error_4 = _a.sent();
+                next(error_4);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
@@ -153,7 +153,7 @@ var updateOne = function (req, res, next) { return __awaiter(void 0, void 0, voi
 }); };
 exports.updateOne = updateOne;
 var deleteOne = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, error_4;
+    var id, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -167,8 +167,8 @@ var deleteOne = function (req, res, next) { return __awaiter(void 0, void 0, voi
                 res.json("order ".concat(id, " deleted successfully"));
                 return [3 /*break*/, 4];
             case 3:
-                error_4 = _a.sent();
-                next(error_4);
+                error_5 = _a.sent();
+                next(error_5);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

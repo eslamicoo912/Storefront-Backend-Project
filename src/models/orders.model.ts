@@ -23,7 +23,7 @@ export default class OrderModel {
     }
   }
 
-  async getMeny(): Promise<Order[]> {
+  async getMany(): Promise<Order[]> {
     try {
       const connection = await database.connect()
       const sql = 'SELECT * FROM Orders'

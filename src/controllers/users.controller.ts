@@ -29,3 +29,41 @@ export const getMany = async (req: Request, res: Response, next: NextFunction) =
     next(error)
   }
 }
+
+export const getOne = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await usermodel.getOne(req.params.id)
+    res.json(user)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const updateOne = async (req: Request, res: Response, next: NextFunction) => {
+  const user: User = {
+    id: parseInt(req.params.id),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    password: req.body.password
+  }
+
+  try {
+    const newUser = await usermodel.updateOne(user)
+    res.json({
+      message: 'updated successfully',
+      data: { ...newUser }
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id
+  try {
+    await usermodel.deleteOne(id)
+    res.json(`user ${id} deleted successfully`)
+  } catch (error) {
+    next(error)
+  }
+}

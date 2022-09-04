@@ -45,7 +45,7 @@ export default class ProductModel {
   async updateOne(p: Product): Promise<Product> {
     try {
       const connection = await database.connect()
-      const sql = 'UPDATE Products SET name=$1,price=$2 WHERE id=$3 RETURNING *'
+      const sql = 'UPDATE products SET name=$1,price=$2 WHERE id=$3 RETURNING *'
       const result = await connection.query(sql, [p.name, p.price, p.id])
       const finalResult = result.rows[0]
       connection.release()

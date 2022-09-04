@@ -24,4 +24,7 @@ var controllers = __importStar(require("../../controllers/products.controller"))
 var routes = (0, express_1.Router)();
 routes.post('/', controllers.createProduct);
 routes.get('/', controllers.getMany);
+routes.get('/:id', controllers.getOne);
+routes.patch('/:id', controllers.updateOne);
+routes.delete('/:id', controllers.deleteOne);
 exports.default = routes;

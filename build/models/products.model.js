@@ -129,7 +129,7 @@ var ProductModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'UPDATE Products SET name=$1,price=$2 WHERE id=$3 RETURNING *';
+                        sql = 'UPDATE products SET name=$1,price=$2 WHERE id=$3 RETURNING *';
                         return [4 /*yield*/, connection.query(sql, [p.name, p.price, p.id])];
                     case 2:
                         result = _a.sent();

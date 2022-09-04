@@ -20,11 +20,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
-var controllers = __importStar(require("../../controllers/users.controller"));
+var controllers = __importStar(require("../../controllers/orders.controller"));
 var routes = (0, express_1.Router)();
-routes.post('/', controllers.createUser);
 routes.get('/', controllers.getMany);
 routes.get('/:id', controllers.getOne);
+routes.post('/', controllers.createOrder);
 routes.patch('/:id', controllers.updateOne);
 routes.delete('/:id', controllers.deleteOne);
 exports.default = routes;

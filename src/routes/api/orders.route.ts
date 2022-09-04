@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import * as controllers from '../../controllers/users.controller'
+import * as controllers from '../../controllers/orders.controller'
 
 const routes = Router()
 
-routes.post('/', controllers.createUser)
 routes.get('/', controllers.getMany)
 routes.get('/:id', controllers.getOne)
+routes.post('/', controllers.createOrder)
 routes.patch('/:id', controllers.updateOne)
 routes.delete('/:id', controllers.deleteOne)
 

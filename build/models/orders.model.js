@@ -54,7 +54,7 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'INSERT INTO Orders(productId,quantity,userId,status) VALUES($1,$2,$3,$4) RETURNING *';
+                        sql = 'INSERT INTO orders(productId,quantity,userId,status) VALUES($1,$2,$3,$4) RETURNING *';
                         return [4 /*yield*/, connection.query(sql, [o.productId, o.quantity, o.userId, o.status])];
                     case 2:
                         result = _a.sent();
@@ -68,7 +68,7 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
-    OrderModel.prototype.getMeny = function () {
+    OrderModel.prototype.getMany = function () {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_2;
             return __generator(this, function (_a) {
@@ -78,7 +78,7 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT * FROM Orders';
+                        sql = 'SELECT * FROM orders';
                         return [4 /*yield*/, connection.query(sql)];
                     case 2:
                         result = _a.sent();

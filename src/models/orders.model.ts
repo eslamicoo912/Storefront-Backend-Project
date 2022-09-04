@@ -1,20 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import database from '../database'
-
-type Order = {
-  id?: number
-  productId: number
-  quantity: number
-  userId: number
-  status: string
-}
+import Order from '../types/order.type'
 
 export default class OrderModel {
   async createOrder(o: Order): Promise<Order> {
     try {
       const connection = await database.connect()
       const sql =
-        'INSERT INTO Orders(productId,quantity,userId,status) VALUES($1,$2,$3,$4) RETURNING *'
+        'INSERT INTO orders(productId,quantity,userId,status) VALUES($1,$2,$3,$4) RETURNING *'
       const result = await connection.query(sql, [o.productId, o.quantity, o.userId, o.status])
       connection.release()
       return result.rows[0]
@@ -26,7 +19,7 @@ export default class OrderModel {
   async getMany(): Promise<Order[]> {
     try {
       const connection = await database.connect()
-      const sql = 'SELECT * FROM Orders'
+      const sql = 'SELECT * FROM orders'
       const result = await connection.query(sql)
       connection.release()
       return result.rows

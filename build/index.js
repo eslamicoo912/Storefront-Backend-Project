@@ -11,6 +11,7 @@ var PORT = 3000;
 var app = (0, express_1.default)();
 // HTTP request logger middleware
 app.use((0, morgan_1.default)('short'));
+app.use(express_1.default.json());
 // add routing for / path
 app.use('/', routes_1.default);
 // start express server

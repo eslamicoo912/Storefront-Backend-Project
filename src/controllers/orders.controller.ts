@@ -5,15 +5,8 @@ import Order from '../types/order.type'
 const ordermodel = new OrderModel()
 
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
-  const order: Order = {
-    productId: req.body.productid,
-    quantity: req.body.quantity,
-    userId: req.body.userid,
-    status: req.body.status
-  }
-
   try {
-    const newOrder = await ordermodel.createOrder(order)
+    const newOrder = await ordermodel.createOrder(req.body)
     res.json({
       status: 'success',
       data: { ...newOrder },
@@ -36,7 +29,7 @@ export const getMany = async (req: Request, res: Response, next: NextFunction) =
 export const getOne = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id
   try {
-    const order = ordermodel.getOne(id)
+    const order = await ordermodel.getOne(id)
     res.json(order)
   } catch (error) {
     next(error)

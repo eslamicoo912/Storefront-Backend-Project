@@ -170,6 +170,31 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
+    OrderModel.prototype.addProduct = function (quantity, orderid, productid) {
+        return __awaiter(this, void 0, void 0, function () {
+            var connection, sql, result, order, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        connection = _a.sent();
+                        sql = 'INSERT INTO order_products (quantity , orderid , productid)';
+                        return [4 /*yield*/, connection.query(sql, [quantity, orderid, productid])];
+                    case 2:
+                        result = _a.sent();
+                        order = result.rows[0];
+                        connection.release();
+                        return [2 /*return*/, order];
+                    case 3:
+                        error_6 = _a.sent();
+                        throw new Error(error_6.message);
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return OrderModel;
 }());
 exports.default = OrderModel;

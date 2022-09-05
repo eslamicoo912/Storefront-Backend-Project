@@ -65,3 +65,20 @@ export const deleteOne = async (req: Request, res: Response, next: NextFunction)
     next(error)
   }
 }
+
+export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
+  const orderid: string = req.params.id
+  const productid: string = req.body.productid
+  const quantity: number = parseInt(req.body.quantity)
+
+  try {
+    const order = await ordermodel.addProduct(quantity, orderid, productid)
+    res.json({
+      status: 'success',
+      data: { ...order },
+      message: `product ${productid} added to order ${orderid}`
+    })
+  } catch (error) {
+    next(error)
+  }
+}

@@ -142,19 +142,5 @@ describe('Test users model', function () {
                 }
             });
         }); });
-        /*it('should return new user', async () => {
-          const newUser = await usermodel.createUser({
-            firstname: 'Eslam',
-            lastname: 'Ashraf',
-            password: 'eslam900100'
-          } as User)
-    
-          expect(newUser).toEqual({
-            id: newUser.id,
-            firstname: 'Eslam',
-            lastname: 'Ashraf'
-          } as User)
-        })
-        */
     });
 });

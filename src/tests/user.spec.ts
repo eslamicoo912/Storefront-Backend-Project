@@ -1,6 +1,5 @@
 import UserModel from '../models/users.model'
 import database from '../database'
-import { hashPassword } from '../models/users.model'
 import User from '../types/user.type'
 
 const usermodel = new UserModel()

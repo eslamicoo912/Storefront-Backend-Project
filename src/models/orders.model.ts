@@ -70,4 +70,18 @@ export default class OrderModel {
       throw new Error((error as Error).message)
     }
   }
+
+  async addProduct(quantity: number, orderid: string, productid: string): Promise<Order> {
+    try {
+      const connection = await database.connect()
+      const sql =
+        'INSERT INTO order_products (quantity , orderid , productid) VALUES ($1, $2, $3) RETURNING *'
+      const result = await connection.query(sql, [quantity, orderid, productid])
+      const order = result.rows[0]
+      connection.release()
+      return order
+    } catch (error) {
+      throw new Error((error as Error).message)
+    }
+  }
 }

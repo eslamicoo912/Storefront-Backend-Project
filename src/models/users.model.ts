@@ -4,7 +4,7 @@ import User from '../types/user.type'
 import bcrypt from 'bcrypt'
 import config from '../config'
 
-const hashPassword = (password: string) => {
+export const hashPassword = (password: string) => {
   const salt = parseInt(config.salt as string, 10)
   return bcrypt.hashSync(`${password}${config.pepper}`, salt)
 }
@@ -15,8 +15,8 @@ class UserModel {
       const connection = await database.connect()
       const sql = `INSERT INTO users (firstName,lastName,password) VALUES($1, $2, $3) RETURNING *`
       const result = await connection.query(sql, [
-        u.firstName,
-        u.lastName,
+        u.firstname,
+        u.lastname,
         hashPassword(u.password)
       ])
       connection.release()
@@ -56,8 +56,8 @@ class UserModel {
       const sql =
         'UPDATE users SET firstName=$1,lastName=$2,password=$3 WHERE id=$4 RETURNING id,firstName,lastName'
       const result = await connection.query(sql, [
-        u.firstName,
-        u.lastName,
+        u.firstname,
+        u.lastname,
         hashPassword(u.password),
         u.id
       ])

@@ -61,8 +61,8 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 user = {
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
                     password: req.body.password
                 };
                 _a.label = 1;
@@ -132,8 +132,8 @@ var updateOne = function (req, res, next) { return __awaiter(void 0, void 0, voi
             case 0:
                 user = {
                     id: parseInt(req.params.id),
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
                     password: req.body.password
                 };
                 _a.label = 1;
@@ -180,13 +180,13 @@ var deleteOne = function (req, res, next) { return __awaiter(void 0, void 0, voi
 }); };
 exports.deleteOne = deleteOne;
 var authenticate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, user, token, error_6;
+    var _a, firstname, password, user, token, error_6;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
-                _a = req.body, email = _a.email, password = _a.password;
-                return [4 /*yield*/, usermodel.authenticate(email, password)];
+                _a = req.body, firstname = _a.firstname, password = _a.password;
+                return [4 /*yield*/, usermodel.authenticate(firstname, password)];
             case 1:
                 user = _b.sent();
                 token = jsonwebtoken_1.default.sign({ user: user }, config_1.default.token);

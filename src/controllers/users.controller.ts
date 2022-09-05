@@ -8,8 +8,8 @@ const usermodel = new UserModel()
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
     password: req.body.password
   }
   try {
@@ -44,8 +44,8 @@ export const getOne = async (req: Request, res: Response, next: NextFunction) =>
 export const updateOne = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = {
     id: parseInt(req.params.id),
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
     password: req.body.password
   }
 
@@ -72,8 +72,8 @@ export const deleteOne = async (req: Request, res: Response, next: NextFunction)
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { firstName, password } = req.body
-    const user = await usermodel.authenticate(firstName, password)
+    const { firstname, password } = req.body
+    const user = await usermodel.authenticate(firstname, password)
     const token = jwt.sign({ user }, config.token as unknown as string)
     if (!user) {
       return res.status(401).json({

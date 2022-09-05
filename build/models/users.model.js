@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.hashPassword = void 0;
 /* eslint-disable @typescript-eslint/no-empty-function */
 var database_1 = __importDefault(require("../database"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
@@ -47,6 +48,7 @@ var hashPassword = function (password) {
     var salt = parseInt(config_1.default.salt, 10);
     return bcrypt_1.default.hashSync("".concat(password).concat(config_1.default.pepper), salt);
 };
+exports.hashPassword = hashPassword;
 var UserModel = /** @class */ (function () {
     function UserModel() {
     }
@@ -62,9 +64,9 @@ var UserModel = /** @class */ (function () {
                         connection = _a.sent();
                         sql = "INSERT INTO users (firstName,lastName,password) VALUES($1, $2, $3) RETURNING *";
                         return [4 /*yield*/, connection.query(sql, [
-                                u.firstName,
-                                u.lastName,
-                                hashPassword(u.password)
+                                u.firstname,
+                                u.lastname,
+                                (0, exports.hashPassword)(u.password)
                             ])];
                     case 2:
                         result = _a.sent();
@@ -138,9 +140,9 @@ var UserModel = /** @class */ (function () {
                         connection = _a.sent();
                         sql = 'UPDATE users SET firstName=$1,lastName=$2,password=$3 WHERE id=$4 RETURNING id,firstName,lastName';
                         return [4 /*yield*/, connection.query(sql, [
-                                u.firstName,
-                                u.lastName,
-                                hashPassword(u.password),
+                                u.firstname,
+                                u.lastname,
+                                (0, exports.hashPassword)(u.password),
                                 u.id
                             ])];
                     case 2:
@@ -179,7 +181,7 @@ var UserModel = /** @class */ (function () {
             });
         });
     };
-    UserModel.prototype.authenticate = function (email, password) {
+    UserModel.prototype.authenticate = function (firstName, password) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, hashPassword_1, isValidPassword, userInfo, error_6;
             return __generator(this, function (_a) {
@@ -189,15 +191,15 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT password from users WHERE email=$1';
-                        return [4 /*yield*/, connection.query(sql, [email])];
+                        sql = 'SELECT password from users WHERE firstName=$1';
+                        return [4 /*yield*/, connection.query(sql, [firstName])];
                     case 2:
                         result = _a.sent();
                         if (!result.rows.length) return [3 /*break*/, 4];
                         hashPassword_1 = result.rows[0].password;
                         isValidPassword = bcrypt_1.default.compareSync("".concat(password).concat(config_1.default.pepper), hashPassword_1);
                         if (!isValidPassword) return [3 /*break*/, 4];
-                        return [4 /*yield*/, connection.query('SELECT id,firstName,lastName FROM users WHERE email=$1', [email])];
+                        return [4 /*yield*/, connection.query('SELECT id,firstName,lastName FROM users WHERE firstName=$1', [firstName])];
                     case 3:
                         userInfo = _a.sent();
                         return [2 /*return*/, userInfo.rows[0]];

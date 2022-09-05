@@ -180,7 +180,7 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'INSERT INTO order_products (quantity , orderid , productid)';
+                        sql = 'INSERT INTO order_products (quantity , orderid , productid) VALUES ($1, $2, $3) RETURNING *';
                         return [4 /*yield*/, connection.query(sql, [quantity, orderid, productid])];
                     case 2:
                         result = _a.sent();

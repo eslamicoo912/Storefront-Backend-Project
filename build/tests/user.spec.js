@@ -52,6 +52,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var users_model_1 = __importDefault(require("../models/users.model"));
 var database_1 = __importDefault(require("../database"));
+var supertest_1 = __importDefault(require("supertest"));
+var __1 = __importDefault(require(".."));
+var request = (0, supertest_1.default)(__1.default);
 var usermodel = new users_model_1.default();
 describe('Test users model', function () {
     describe('Test methods exist', function () {
@@ -142,5 +145,43 @@ describe('Test users model', function () {
                 }
             });
         }); });
+        it('should delete user and return the id', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var deletedUser;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, usermodel.deleteOne(user.id)];
+                    case 1:
+                        deletedUser = _a.sent();
+                        expect(deletedUser.id).toBe(user.id);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
     });
+});
+describe('Test crud api methods', function () {
+    it('test getAll users endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/users')];
+                case 1:
+                    res = _a.sent();
+                    expect(res.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('test getOne user endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get("/users/".concat(1))];
+                case 1:
+                    res = _a.sent();
+                    expect(res.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });

@@ -1,6 +1,10 @@
 import UserModel from '../models/users.model'
 import database from '../database'
 import User from '../types/user.type'
+import supertest from 'supertest'
+import app from '..'
+
+const request = supertest(app)
 
 const usermodel = new UserModel()
 
@@ -63,5 +67,21 @@ describe('Test users model', () => {
       expect(updatedUser.firstname).toBe('newEslam')
       expect(updatedUser.lastname).toBe('newAshraf')
     })
+
+    it('should delete user and return the id', async () => {
+      const deletedUser = await usermodel.deleteOne(user.id as unknown as string)
+      expect(deletedUser.id).toBe(user.id)
+    })
+  })
+})
+
+describe('Test crud api methods', () => {
+  it('test getAll users endpoint', async () => {
+    const res = await request.get('/users')
+    expect(res.status).toBe(200)
+  })
+  it('test getOne user endpoint', async () => {
+    const res = await request.get(`/users/${1}`)
+    expect(res.status).toBe(200)
   })
 })

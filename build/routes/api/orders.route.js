@@ -25,6 +25,7 @@ var routes = (0, express_1.Router)();
 routes.get('/', controllers.getMany);
 routes.get('/:id', controllers.getOne);
 routes.post('/', controllers.createOrder);
+routes.post('/:id/products', controllers.addProduct);
 routes.patch('/:id', controllers.updateOne);
 routes.delete('/:id', controllers.deleteOne);
 exports.default = routes;

@@ -50,7 +50,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteOne = exports.updateOne = exports.getOne = exports.getMany = exports.createOrder = void 0;
+exports.addProduct = exports.deleteOne = exports.updateOne = exports.getOne = exports.getMany = exports.createOrder = void 0;
 var orders_model_1 = __importDefault(require("../models/orders.model"));
 var ordermodel = new orders_model_1.default();
 var createOrder = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -175,3 +175,32 @@ var deleteOne = function (req, res, next) { return __awaiter(void 0, void 0, voi
     });
 }); };
 exports.deleteOne = deleteOne;
+var addProduct = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var orderid, productid, quantity, order, error_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                orderid = req.params.id;
+                productid = req.body.productid;
+                quantity = parseInt(req.body.quantity);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, ordermodel.addProduct(quantity, orderid, productid)];
+            case 2:
+                order = _a.sent();
+                res.json({
+                    status: 'success',
+                    data: __assign({}, order),
+                    message: "product ".concat(productid, " added to order ").concat(orderid)
+                });
+                return [3 /*break*/, 4];
+            case 3:
+                error_6 = _a.sent();
+                next(error_6);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.addProduct = addProduct;

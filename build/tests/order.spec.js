@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -50,125 +39,150 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var users_model_1 = __importDefault(require("../models/users.model"));
-var database_1 = __importDefault(require("../database"));
-var supertest_1 = __importDefault(require("supertest"));
 var __1 = __importDefault(require(".."));
+var database_1 = __importDefault(require("../database"));
+var orders_model_1 = __importDefault(require("../models/orders.model"));
+var supertest_1 = __importDefault(require("supertest"));
+var users_model_1 = __importDefault(require("../models/users.model"));
+var products_model_1 = __importDefault(require("../models/products.model"));
 var request = (0, supertest_1.default)(__1.default);
 var usermodel = new users_model_1.default();
-describe('Test users model methods', function () {
+var productmodel = new products_model_1.default();
+var ordermodel = new orders_model_1.default();
+describe('Test orders model', function () {
     describe('Test methods exist', function () {
-        it('Shuold find get many users method', function () {
-            expect(usermodel.getMeny).toBeDefined();
+        it('should find create order method', function () {
+            expect(ordermodel.createOrder).toBeDefined();
         });
-        it('Should find get one user method', function () {
-            expect(usermodel.getOne).toBeDefined();
+        it('should find get many orders method', function () {
+            expect(ordermodel.getMany()).toBeDefined();
         });
-        it('Sholud find update user model', function () {
-            expect(usermodel.updateOne).toBeDefined();
+        it('should find get one order method', function () {
+            expect(ordermodel.getOne).toBeDefined();
         });
-        it('Sholud find delete user model', function () {
-            expect(usermodel.deleteOne).toBeDefined();
+        it('should find update user method', function () {
+            expect(ordermodel.updateOne).toBeDefined();
+        });
+        it('should find delete user method', function () {
+            expect(ordermodel.deleteOne).toBeDefined();
         });
     });
-    describe('Test user model logic', function () {
-        var user = {
-            firstname: 'Eslam',
-            lastname: 'Ashraf',
-            password: 'eslam900100'
-        };
+    describe('Test order model logic', function () {
         beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
-            var newUser;
+            var name, price;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.createUser(user)];
+                    case 0: return [4 /*yield*/, usermodel.createUser({
+                            firstname: 'Eslam',
+                            lastname: 'Ashraf',
+                            password: 'eslam900190'
+                        })];
                     case 1:
-                        newUser = _a.sent();
-                        user.id = newUser.id;
+                        _a.sent();
+                        name = 'phone';
+                        price = 100;
+                        return [4 /*yield*/, productmodel.createProduct(name, price)];
+                    case 2:
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
         }); });
         afterAll(function () { return __awaiter(void 0, void 0, void 0, function () {
-            var connection, sql, sql2;
+            var connection, sql;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'DELETE FROM users;';
-                        sql2 = 'ALTER SEQUENCE users_id_seq RESTART WITH 1';
+                        sql = 'ALTER SEQUENCE orders_id_seq RESTART WITH 1';
                         return [4 /*yield*/, connection.query(sql)];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, connection.query(sql2)];
+                        connection.release();
+                        return [4 /*yield*/, usermodel.deleteOne('1')];
                     case 3:
                         _a.sent();
-                        connection.release();
+                        return [4 /*yield*/, productmodel.deleteOne('1')];
+                    case 4:
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
         }); });
-        it('should get many users', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var data;
+        it('test create order', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.getMeny()];
+                    case 0: return [4 /*yield*/, ordermodel.createOrder({
+                            productid: 1,
+                            quantity: 15,
+                            userid: 1,
+                            status: 'active'
+                        })];
                     case 1:
-                        data = _a.sent();
-                        expect(data.length).toBeGreaterThan(0);
+                        result = _a.sent();
+                        expect(result).toEqual({
+                            id: 1,
+                            productid: 1,
+                            quantity: 15,
+                            userid: 1,
+                            status: 'active'
+                        });
                         return [2 /*return*/];
                 }
             });
         }); });
-        it('should return one user', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var data;
+        it('test getMany orders', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.getOne(user.id)];
+                    case 0: return [4 /*yield*/, ordermodel.getMany()];
                     case 1:
-                        data = _a.sent();
-                        expect(data.id).toBe(user.id);
-                        expect(data.firstname).toBe(user.firstname);
-                        expect(data.lastname).toBe(user.lastname);
+                        results = _a.sent();
+                        expect(results.length).toBeGreaterThan(0);
                         return [2 /*return*/];
                 }
             });
         }); });
-        it('should update the user and return the new one', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var updatedUser;
+        it('test get one order', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.updateOne(__assign(__assign({}, user), { firstname: 'newEslam', lastname: 'newAshraf', password: 'newPAssword' }))];
+                    case 0: return [4 /*yield*/, ordermodel.getOne('1')];
                     case 1:
-                        updatedUser = _a.sent();
-                        expect(updatedUser.id).toBe(user.id);
-                        expect(updatedUser.firstname).toBe('newEslam');
-                        expect(updatedUser.lastname).toBe('newAshraf');
+                        result = _a.sent();
+                        expect(result).toEqual({
+                            id: 1,
+                            productid: 1,
+                            quantity: 15,
+                            userid: 1,
+                            status: 'active'
+                        });
                         return [2 /*return*/];
                 }
             });
         }); });
-        it('should delete user and return the id', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var deletedUser;
+        it('test delete order', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.deleteOne(user.id)];
+                    case 0: return [4 /*yield*/, ordermodel.deleteOne('1')];
                     case 1:
-                        deletedUser = _a.sent();
-                        expect(deletedUser.id).toBe(user.id);
+                        result = _a.sent();
+                        expect(result.id).toEqual(1);
                         return [2 /*return*/];
                 }
             });
         }); });
     });
 });
-describe('Test crud api methods', function () {
-    it('test getAll users endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+describe('Test order endpoints', function () {
+    it('test get all orders endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/users')];
+                case 0: return [4 /*yield*/, request.get('/orders')];
                 case 1:
                     res = _a.sent();
                     expect(res.status).toBe(200);
@@ -176,11 +190,11 @@ describe('Test crud api methods', function () {
             }
         });
     }); });
-    it('test getOne user endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('test get one order endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get("/users/".concat(1))];
+                case 0: return [4 /*yield*/, request.get('/orders/1')];
                 case 1:
                     res = _a.sent();
                     expect(res.status).toBe(200);

@@ -1,8 +1,8 @@
 type Order = {
   id?: number
-  productId: number
+  productid: number
   quantity: number
-  userId: number
+  userid: number
   status: string
 }
 

@@ -39,9 +39,9 @@ export const getOne = async (req: Request, res: Response, next: NextFunction) =>
 export const updateOne = async (req: Request, res: Response, next: NextFunction) => {
   const order: Order = {
     id: parseInt(req.params.id),
-    productId: req.body.productid,
+    productid: req.body.productid,
     quantity: req.body.quantity,
-    userId: req.body.userid,
+    userid: req.body.userid,
     status: req.body.status
   }
 

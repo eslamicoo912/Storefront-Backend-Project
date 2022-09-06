@@ -8,7 +8,7 @@ const request = supertest(app)
 
 const usermodel = new UserModel()
 
-describe('Test users model', () => {
+describe('Test users model methods', () => {
   describe('Test methods exist', () => {
     it('Shuold find get many users method', () => {
       expect(usermodel.getMeny).toBeDefined()
@@ -39,13 +39,15 @@ describe('Test users model', () => {
     afterAll(async () => {
       const connection = await database.connect()
       const sql = 'DELETE FROM users;'
+      const sql2 = 'ALTER SEQUENCE users_id_seq RESTART WITH 1'
       await connection.query(sql)
+      await connection.query(sql2)
       connection.release()
     })
 
     it('should get many users', async () => {
       const data = await usermodel.getMeny()
-      expect(data.length).toBeGreaterThan(1)
+      expect(data.length).toBeGreaterThan(0)
     })
 
     it('should return one user', async () => {

@@ -55,7 +55,7 @@ var OrderModel = /** @class */ (function () {
                     case 1:
                         connection = _a.sent();
                         sql = 'INSERT INTO orders(productId,quantity,userId,status) VALUES($1,$2,$3,$4) RETURNING *';
-                        return [4 /*yield*/, connection.query(sql, [o.productId, o.quantity, o.userId, o.status])];
+                        return [4 /*yield*/, connection.query(sql, [o.productid, o.quantity, o.userid, o.status])];
                     case 2:
                         result = _a.sent();
                         connection.release();
@@ -128,9 +128,9 @@ var OrderModel = /** @class */ (function () {
                         connection = _a.sent();
                         sql = 'UPDATE Orders SET productId=$1,quantity=$2,userId=$3,status=$4 WHERE id=$4 RETURNING *';
                         return [4 /*yield*/, connection.query(sql, [
-                                o.productId,
+                                o.productid,
                                 o.quantity,
-                                o.userId,
+                                o.userid,
                                 o.status,
                                 o.id
                             ])];

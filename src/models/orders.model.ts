@@ -8,7 +8,7 @@ export default class OrderModel {
       const connection = await database.connect()
       const sql =
         'INSERT INTO orders(productId,quantity,userId,status) VALUES($1,$2,$3,$4) RETURNING *'
-      const result = await connection.query(sql, [o.productId, o.quantity, o.userId, o.status])
+      const result = await connection.query(sql, [o.productid, o.quantity, o.userid, o.status])
       connection.release()
       return result.rows[0]
     } catch (error) {
@@ -46,9 +46,9 @@ export default class OrderModel {
       const sql =
         'UPDATE Orders SET productId=$1,quantity=$2,userId=$3,status=$4 WHERE id=$4 RETURNING *'
       const result = await connection.query(sql, [
-        o.productId,
+        o.productid,
         o.quantity,
-        o.userId,
+        o.userid,
         o.status,
         o.id
       ])

@@ -127,9 +127,9 @@ var updateOne = function (req, res, next) { return __awaiter(void 0, void 0, voi
             case 0:
                 order = {
                     id: parseInt(req.params.id),
-                    productId: req.body.productid,
+                    productid: req.body.productid,
                     quantity: req.body.quantity,
-                    userId: req.body.userid,
+                    userid: req.body.userid,
                     status: req.body.status
                 };
                 _a.label = 1;

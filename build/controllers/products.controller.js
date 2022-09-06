@@ -54,16 +54,18 @@ exports.deleteOne = exports.updateOne = exports.getOne = exports.getMany = expor
 var products_model_1 = __importDefault(require("../models/products.model"));
 var productmodel = new products_model_1.default();
 var createProduct = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var name, price, newProduct, error_1;
+    var product, newProduct, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                name = req.body.name;
-                price = req.body.price;
+                product = {
+                    name: req.body.name,
+                    price: req.body.price
+                };
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, productmodel.createProduct(name, price)];
+                return [4 /*yield*/, productmodel.createProduct(product)];
             case 2:
                 newProduct = _a.sent();
                 res.json(newProduct);

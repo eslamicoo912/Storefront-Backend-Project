@@ -69,7 +69,6 @@ describe('Test orders model', function () {
     });
     describe('Test order model logic', function () {
         beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
-            var name, price;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, usermodel.createUser({
@@ -79,9 +78,10 @@ describe('Test orders model', function () {
                         })];
                     case 1:
                         _a.sent();
-                        name = 'phone';
-                        price = 100;
-                        return [4 /*yield*/, productmodel.createProduct(name, price)];
+                        return [4 /*yield*/, productmodel.createProduct({
+                                name: 'phone',
+                                price: 100
+                            })];
                     case 2:
                         _a.sent();
                         return [2 /*return*/];

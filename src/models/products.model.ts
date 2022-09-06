@@ -3,11 +3,11 @@ import database from '../database'
 import Product from '../types/product.type'
 
 export default class ProductModel {
-  async createProduct(name: string, price: number): Promise<Product> {
+  async createProduct(p: Product): Promise<Product> {
     try {
       const connection = await database.connect()
       const sql = `INSERT INTO products (name,price) VALUES($1, $2) returning *`
-      const result = await connection.query(sql, [name, price])
+      const result = await connection.query(sql, [p.name, p.price])
       const finalResult = result.rows[0]
       connection.release()
       return finalResult

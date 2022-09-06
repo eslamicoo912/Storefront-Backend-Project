@@ -36,9 +36,10 @@ describe('Test orders model', () => {
         lastname: 'Ashraf',
         password: 'eslam900190'
       })
-      const name = 'phone'
-      const price = 100
-      await productmodel.createProduct(name, price)
+      await productmodel.createProduct({
+        name: 'phone',
+        price: 100
+      })
     })
 
     afterAll(async () => {

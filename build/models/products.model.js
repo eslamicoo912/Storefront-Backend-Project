@@ -44,7 +44,7 @@ var database_1 = __importDefault(require("../database"));
 var ProductModel = /** @class */ (function () {
     function ProductModel() {
     }
-    ProductModel.prototype.createProduct = function (name, price) {
+    ProductModel.prototype.createProduct = function (p) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, finalResult, error_1;
             return __generator(this, function (_a) {
@@ -55,7 +55,7 @@ var ProductModel = /** @class */ (function () {
                     case 1:
                         connection = _a.sent();
                         sql = "INSERT INTO products (name,price) VALUES($1, $2) returning *";
-                        return [4 /*yield*/, connection.query(sql, [name, price])];
+                        return [4 /*yield*/, connection.query(sql, [p.name, p.price])];
                     case 2:
                         result = _a.sent();
                         finalResult = result.rows[0];

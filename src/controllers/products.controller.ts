@@ -5,11 +5,13 @@ import Product from '../types/product.type'
 const productmodel = new ProductModel()
 
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
-  const name: string = req.body.name
-  const price: number = req.body.price
+  const product = {
+    name: req.body.name,
+    price: req.body.price
+  }
 
   try {
-    const newProduct = await productmodel.createProduct(name, price)
+    const newProduct = await productmodel.createProduct(product)
     res.json(newProduct)
   } catch (error) {
     next(error)

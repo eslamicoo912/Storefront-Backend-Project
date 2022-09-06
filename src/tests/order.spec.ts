@@ -55,14 +55,14 @@ describe('Test orders model', () => {
       const result = await ordermodel.createOrder({
         productid: 1,
         quantity: 15,
-        userid: 1,
+        userid: 2,
         status: 'active'
       })
       expect(result).toEqual({
         id: 1,
         productid: 1,
         quantity: 15,
-        userid: 1,
+        userid: 2,
         status: 'active'
       })
     })
@@ -71,9 +71,9 @@ describe('Test orders model', () => {
       expect(results.length).toBeGreaterThan(0)
     })
     it('test get one order', async () => {
-      const result = await ordermodel.getOne('1')
+      const result = await ordermodel.getOne('2')
       expect(result).toEqual({
-        id: 1,
+        id: 2,
         productid: 1,
         quantity: 15,
         userid: 1,

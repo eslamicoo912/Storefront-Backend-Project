@@ -21,11 +21,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var controllers = __importStar(require("../../controllers/users.controller"));
+var authentication_middleware_1 = require("../../middleware/authentication.middleware");
 var routes = (0, express_1.Router)();
-routes.post('/', controllers.createUser);
-routes.get('/', controllers.getMany);
-routes.get('/:id', controllers.getOne);
+routes.post('/', authentication_middleware_1.validateToken, controllers.createUser);
+routes.get('/', controllers.authenticate, controllers.getMany);
+routes.get('/:id', controllers.authenticate, controllers.getOne);
 routes.patch('/:id', controllers.updateOne);
 routes.delete('/:id', controllers.deleteOne);
-routes.post('/authenticate', controllers.authenticate);
 exports.default = routes;

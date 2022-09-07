@@ -56,7 +56,7 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var config_1 = __importDefault(require("../config"));
 var usermodel = new users_model_1.default();
 var createUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newUser, error_1;
+    var user, newUser, token, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -71,9 +71,11 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 return [4 /*yield*/, usermodel.createUser(user)];
             case 2:
                 newUser = _a.sent();
+                token = jsonwebtoken_1.default.sign({ newUser: newUser }, config_1.default.token);
                 res.json({
                     message: 'user created successfully',
-                    data: __assign({}, newUser)
+                    data: __assign({}, newUser),
+                    token: { token: token }
                 });
                 return [3 /*break*/, 4];
             case 3:

@@ -14,9 +14,11 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
   }
   try {
     const newUser = await usermodel.createUser(user)
+    const token = jwt.sign({ newUser }, config.token as unknown as string)
     res.json({
       message: 'user created successfully',
-      data: { ...newUser }
+      data: { ...newUser },
+      token: { token }
     })
   } catch (error) {
     next(error)

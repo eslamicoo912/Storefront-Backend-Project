@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -59,7 +48,7 @@ var usermodel = new users_model_1.default();
 describe('Test users model methods', function () {
     describe('Test methods exist', function () {
         it('Shuold find get many users method', function () {
-            expect(usermodel.getMeny).toBeDefined();
+            expect(usermodel.getMany).toBeDefined();
         });
         it('Should find get one user method', function () {
             expect(usermodel.getOne).toBeDefined();
@@ -72,19 +61,18 @@ describe('Test users model methods', function () {
         });
     });
     describe('Test user model logic', function () {
-        var user = {
-            firstname: 'Eslam',
-            lastname: 'Ashraf',
-            password: 'eslam900100'
-        };
+        var firstname = 'Eslam';
+        var lastname = 'Ashraf';
+        var password = 'eslam900100';
+        var id;
         beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
             var newUser;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.createUser(user)];
+                    case 0: return [4 /*yield*/, usermodel.createUser(firstname, lastname, password)];
                     case 1:
                         newUser = _a.sent();
-                        user.id = newUser.id;
+                        id = newUser.id;
                         return [2 /*return*/];
                 }
             });
@@ -113,7 +101,7 @@ describe('Test users model methods', function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.getMeny()];
+                    case 0: return [4 /*yield*/, usermodel.getMany()];
                     case 1:
                         data = _a.sent();
                         expect(data.length).toBeGreaterThan(0);
@@ -125,24 +113,28 @@ describe('Test users model methods', function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.getOne(user.id)];
+                    case 0: return [4 /*yield*/, usermodel.getOne(id)];
                     case 1:
                         data = _a.sent();
-                        expect(data.id).toBe(user.id);
-                        expect(data.firstname).toBe(user.firstname);
-                        expect(data.lastname).toBe(user.lastname);
+                        expect(data.id).toBe(parseInt(id));
+                        expect(data.firstname).toBe(firstname);
+                        expect(data.lastname).toBe(lastname);
                         return [2 /*return*/];
                 }
             });
         }); });
         it('should update the user and return the new one', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var updatedUser;
+            var firstname, lastname, password, updatedUser;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.updateOne(__assign(__assign({}, user), { firstname: 'newEslam', lastname: 'newAshraf', password: 'newPAssword' }))];
+                    case 0:
+                        firstname = 'newEslam';
+                        lastname = 'newAshraf';
+                        password = 'newPAssword';
+                        return [4 /*yield*/, usermodel.updateOne(firstname, lastname, password, id)];
                     case 1:
                         updatedUser = _a.sent();
-                        expect(updatedUser.id).toBe(user.id);
+                        expect(updatedUser.id).toBe(parseInt(id));
                         expect(updatedUser.firstname).toBe('newEslam');
                         expect(updatedUser.lastname).toBe('newAshraf');
                         return [2 /*return*/];
@@ -153,39 +145,13 @@ describe('Test users model methods', function () {
             var deletedUser;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.deleteOne(user.id)];
+                    case 0: return [4 /*yield*/, usermodel.deleteOne(id)];
                     case 1:
                         deletedUser = _a.sent();
-                        expect(deletedUser.id).toBe(user.id);
+                        expect(deletedUser.id).toBe(parseInt(id));
                         return [2 /*return*/];
                 }
             });
         }); });
     });
-});
-describe('Test crud api methods', function () {
-    it('test getAll users endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var res;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/users')];
-                case 1:
-                    res = _a.sent();
-                    expect(res.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('test getOne user endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var res;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get("/users/".concat(1))];
-                case 1:
-                    res = _a.sent();
-                    expect(res.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
 });

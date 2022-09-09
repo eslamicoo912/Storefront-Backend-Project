@@ -31,15 +31,13 @@ describe('Test orders model', () => {
 
   describe('Test order model logic', () => {
     beforeAll(async () => {
-      await usermodel.createUser({
-        firstname: 'Eslam',
-        lastname: 'Ashraf',
-        password: 'eslam900190'
-      })
-      await productmodel.createProduct({
-        name: 'phone',
-        price: 100
-      })
+      const firstname = 'Eslam'
+      const lastname = 'Ashraf'
+      const password = 'eslam900190'
+      const name = 'phone'
+      const price = 100
+      await usermodel.createUser(firstname, lastname, password)
+      await productmodel.createProduct(name, price)
     })
 
     afterAll(async () => {
@@ -52,12 +50,11 @@ describe('Test orders model', () => {
     })
 
     it('test create order', async () => {
-      const result = await ordermodel.createOrder({
-        productid: 1,
-        quantity: 15,
-        userid: 2,
-        status: 'active'
-      })
+      const productid = '1'
+      const quantity = '15'
+      const userid = '2'
+      const status = 'active'
+      const result = await ordermodel.createOrder(productid, quantity, userid, status)
       expect(result).toEqual({
         id: 1,
         productid: 1,

@@ -54,12 +54,16 @@ exports.addProduct = exports.deleteOne = exports.updateOne = exports.getOne = ex
 var orders_model_1 = __importDefault(require("../models/orders.model"));
 var ordermodel = new orders_model_1.default();
 var createOrder = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var newOrder, error_1;
+    var productid, quantity, userid, status_1, newOrder, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, ordermodel.createOrder(req.body)];
+                productid = req.body.productid;
+                quantity = req.body.quantity;
+                userid = req.body.userid;
+                status_1 = req.body.status;
+                return [4 /*yield*/, ordermodel.createOrder(productid, quantity, userid, status_1)];
             case 1:
                 newOrder = _a.sent();
                 res.json({
@@ -121,27 +125,22 @@ var getOne = function (req, res, next) { return __awaiter(void 0, void 0, void 0
 }); };
 exports.getOne = getOne;
 var updateOne = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var order, newOrder, error_4;
+    var id, productid, quantity, userid, status, newOrder, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                order = {
-                    id: parseInt(req.params.id),
-                    productid: req.body.productid,
-                    quantity: req.body.quantity,
-                    userid: req.body.userid,
-                    status: req.body.status
-                };
+                id = req.params.id;
+                productid = req.body.productid;
+                quantity = req.body.quantity;
+                userid = req.body.userid;
+                status = req.body.status;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, ordermodel.updateOne(order)];
+                return [4 /*yield*/, ordermodel.updateOne(productid, quantity, userid, id, status)];
             case 2:
                 newOrder = _a.sent();
-                res.json({
-                    data: __assign({}, newOrder),
-                    message: "order ".concat(order.id, " updated successfully")
-                });
+                res.json(newOrder);
                 return [3 /*break*/, 4];
             case 3:
                 error_4 = _a.sent();

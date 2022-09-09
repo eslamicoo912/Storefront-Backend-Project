@@ -51,7 +51,7 @@ describe('Test product model', function () {
             expect(productmodel.createProduct).toBeDefined();
         });
         it('should find get products method', function () {
-            expect(productmodel.getMeny).toBeDefined();
+            expect(productmodel.getMany).toBeDefined();
         });
         it('should find get one product method', function () {
             expect(productmodel.getOne).toBeDefined();
@@ -85,13 +85,13 @@ describe('Test product model', function () {
             });
         }); });
         it('test create product method', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var result;
+            var name, price, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, productmodel.createProduct({
-                            name: 'phone',
-                            price: 1850
-                        })];
+                    case 0:
+                        name = 'phone';
+                        price = 1850;
+                        return [4 /*yield*/, productmodel.createProduct(name, price)];
                     case 1:
                         result = _a.sent();
                         expect(result).toEqual({
@@ -107,7 +107,7 @@ describe('Test product model', function () {
             var results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, productmodel.getMeny()];
+                    case 0: return [4 /*yield*/, productmodel.getMany()];
                     case 1:
                         results = _a.sent();
                         expect(results.length).toBeGreaterThan(0);
@@ -128,14 +128,14 @@ describe('Test product model', function () {
             });
         }); });
         it('should update product and return the new one', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var updatedProduct;
+            var id, name, price, updatedProduct;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, productmodel.updateOne({
-                            id: 2,
-                            name: 'newPhone',
-                            price: 2000
-                        })];
+                    case 0:
+                        id = '2';
+                        name = 'newPhone';
+                        price = 2000;
+                        return [4 /*yield*/, productmodel.updateOne(name, price, id)];
                     case 1:
                         updatedProduct = _a.sent();
                         expect(updatedProduct.name).toBe('newPhone');

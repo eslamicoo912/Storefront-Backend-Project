@@ -6,7 +6,11 @@ const ordermodel = new OrderModel()
 
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const newOrder = await ordermodel.createOrder(req.body)
+    const productid = req.body.productid
+    const quantity = req.body.quantity
+    const userid = req.body.userid
+    const status = req.body.status
+    const newOrder = await ordermodel.createOrder(productid, quantity, userid, status)
     res.json({
       status: 'success',
       data: { ...newOrder },
@@ -37,20 +41,15 @@ export const getOne = async (req: Request, res: Response, next: NextFunction) =>
 }
 
 export const updateOne = async (req: Request, res: Response, next: NextFunction) => {
-  const order: Order = {
-    id: parseInt(req.params.id),
-    productid: req.body.productid,
-    quantity: req.body.quantity,
-    userid: req.body.userid,
-    status: req.body.status
-  }
+  const id = req.params.id
+  const productid = req.body.productid
+  const quantity = req.body.quantity
+  const userid = req.body.userid
+  const status = req.body.status
 
   try {
-    const newOrder = await ordermodel.updateOne(order)
-    res.json({
-      data: { ...newOrder },
-      message: `order ${order.id} updated successfully`
-    })
+    const newOrder = await ordermodel.updateOne(productid, quantity, userid, id, status)
+    res.json(newOrder)
   } catch (error) {
     next(error)
   }

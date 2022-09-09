@@ -2,23 +2,20 @@
 import database from '../database'
 import User from '../types/user.type'
 import bcrypt from 'bcrypt'
+import * as userQueries from '../database/queries/user.queries'
 import config from '../config'
 
 export const hashPassword = (password: string) => {
-  const salt = parseInt(config.salt as string, 10)
-  return bcrypt.hashSync(`${password}${config.pepper}`, salt)
+  return bcrypt.hashSync(`${password}${config.pepper}`, parseInt(config.salt as string, 10))
 }
 
 class UserModel {
-  async createUser(u: User): Promise<User> {
+  // function to run the query that create a new user in the database
+  async createUser(firstname: string, lastname: string, password: string): Promise<User> {
     try {
       const connection = await database.connect()
-      const sql = `INSERT INTO users (firstName,lastName,password) VALUES($1, $2, $3) RETURNING *`
-      const result = await connection.query(sql, [
-        u.firstname,
-        u.lastname,
-        hashPassword(u.password)
-      ])
+      const sql = userQueries.createUser
+      const result = await connection.query(sql, [firstname, lastname, hashPassword(password)])
       connection.release()
       return result.rows[0]
     } catch (error) {
@@ -26,10 +23,11 @@ class UserModel {
     }
   }
 
-  async getMeny(): Promise<User[]> {
+  // function to run the query that get all users from the database
+  async getMany(): Promise<User[]> {
     try {
       const connection = await database.connect()
-      const sql = `SELECT id,firstName,lastName FROM users`
+      const sql = userQueries.getMany
       const result = await connection.query(sql)
       connection.release()
       return result.rows
@@ -38,10 +36,11 @@ class UserModel {
     }
   }
 
+  // function to run the query that get a specific user from the database
   async getOne(id: string): Promise<User> {
     try {
       const connection = await database.connect()
-      const sql = 'SELECT id,firstName,lastName FROM users WHERE id=$1'
+      const sql = userQueries.getOne
       const result = await connection.query(sql, [id])
       connection.release()
       return result.rows[0]
@@ -50,17 +49,17 @@ class UserModel {
     }
   }
 
-  async updateOne(u: User): Promise<User> {
+  // function to run the query that update user in the database
+  async updateOne(
+    firstname: string,
+    lastname: string,
+    password: string,
+    id: string
+  ): Promise<User> {
     try {
       const connection = await database.connect()
-      const sql =
-        'UPDATE users SET firstName=$1,lastName=$2,password=$3 WHERE id=$4 RETURNING id,firstName,lastName'
-      const result = await connection.query(sql, [
-        u.firstname,
-        u.lastname,
-        hashPassword(u.password),
-        u.id
-      ])
+      const sql = userQueries.updateOne
+      const result = await connection.query(sql, [firstname, lastname, hashPassword(password), id])
       connection.release()
       return result.rows[0]
     } catch (error) {
@@ -68,10 +67,11 @@ class UserModel {
     }
   }
 
+  // function to run the query that delete user from the database
   async deleteOne(id: string): Promise<User> {
     try {
       const connection = await database.connect()
-      const sql = 'DELETE FROM users WHERE id=$1 RETURNING id,firstName,lastName'
+      const sql = userQueries.deleteOne
       const result = await connection.query(sql, [id])
       connection.release()
       return result.rows[0]
@@ -80,10 +80,11 @@ class UserModel {
     }
   }
 
+  // function to run the query that check if the user exists in the database
   async authenticate(firstName: string, password: string): Promise<User | null> {
     try {
       const connection = await database.connect()
-      const sql = 'SELECT password from users WHERE firstName=$1'
+      const sql = userQueries.authenticate
       const result = await connection.query(sql, [firstName])
       if (result.rows.length) {
         const { password: hashPassword } = result.rows[0]

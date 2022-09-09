@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,10 +60,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-empty-function */
 var database_1 = __importDefault(require("../database"));
+var productQueries = __importStar(require("../database/queries/product.queries"));
 var ProductModel = /** @class */ (function () {
     function ProductModel() {
     }
-    ProductModel.prototype.createProduct = function (p) {
+    // function to run the query that create a new product in the database
+    ProductModel.prototype.createProduct = function (name, price) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, finalResult, error_1;
             return __generator(this, function (_a) {
@@ -54,8 +75,8 @@ var ProductModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = "INSERT INTO products (name,price) VALUES($1, $2) returning *";
-                        return [4 /*yield*/, connection.query(sql, [p.name, p.price])];
+                        sql = productQueries.createProduct;
+                        return [4 /*yield*/, connection.query(sql, [name, price])];
                     case 2:
                         result = _a.sent();
                         finalResult = result.rows[0];
@@ -69,7 +90,8 @@ var ProductModel = /** @class */ (function () {
             });
         });
     };
-    ProductModel.prototype.getMeny = function () {
+    // function to run the query that get all products from the database
+    ProductModel.prototype.getMany = function () {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, finalResult, error_2;
             return __generator(this, function (_a) {
@@ -79,7 +101,7 @@ var ProductModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT * FROM Products';
+                        sql = productQueries.getMany;
                         return [4 /*yield*/, connection.query(sql)];
                     case 2:
                         result = _a.sent();
@@ -94,6 +116,7 @@ var ProductModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that get a specific product from the database
     ProductModel.prototype.getOne = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, finalResult, error_3;
@@ -104,7 +127,7 @@ var ProductModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT * FROM Products WHERE id=$1';
+                        sql = productQueries.getOne;
                         return [4 /*yield*/, connection.query(sql, [id])];
                     case 2:
                         result = _a.sent();
@@ -119,7 +142,8 @@ var ProductModel = /** @class */ (function () {
             });
         });
     };
-    ProductModel.prototype.updateOne = function (p) {
+    // function to run the query that update a product in the database
+    ProductModel.prototype.updateOne = function (name, price, id) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, finalResult, error_4;
             return __generator(this, function (_a) {
@@ -129,8 +153,8 @@ var ProductModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'UPDATE products SET name=$1,price=$2 WHERE id=$3 RETURNING *';
-                        return [4 /*yield*/, connection.query(sql, [p.name, p.price, p.id])];
+                        sql = productQueries.updateOne;
+                        return [4 /*yield*/, connection.query(sql, [name, price, id])];
                     case 2:
                         result = _a.sent();
                         finalResult = result.rows[0];
@@ -144,6 +168,7 @@ var ProductModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that delete a product from the database
     ProductModel.prototype.deleteOne = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, finalResult, error_5;
@@ -154,7 +179,7 @@ var ProductModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'DELETE FROM Products WHERE id=$1 RETURNING *';
+                        sql = productQueries.deleteOne;
                         return [4 /*yield*/, connection.query(sql, [id])];
                     case 2:
                         result = _a.sent();

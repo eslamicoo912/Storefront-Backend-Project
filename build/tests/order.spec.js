@@ -69,19 +69,19 @@ describe('Test orders model', function () {
     });
     describe('Test order model logic', function () {
         beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            var firstname, lastname, password, name, price;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, usermodel.createUser({
-                            firstname: 'Eslam',
-                            lastname: 'Ashraf',
-                            password: 'eslam900190'
-                        })];
+                    case 0:
+                        firstname = 'Eslam';
+                        lastname = 'Ashraf';
+                        password = 'eslam900190';
+                        name = 'phone';
+                        price = 100;
+                        return [4 /*yield*/, usermodel.createUser(firstname, lastname, password)];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, productmodel.createProduct({
-                                name: 'phone',
-                                price: 100
-                            })];
+                        return [4 /*yield*/, productmodel.createProduct(name, price)];
                     case 2:
                         _a.sent();
                         return [2 /*return*/];
@@ -111,15 +111,15 @@ describe('Test orders model', function () {
             });
         }); });
         it('test create order', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var result;
+            var productid, quantity, userid, status, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, ordermodel.createOrder({
-                            productid: 1,
-                            quantity: 15,
-                            userid: 2,
-                            status: 'active'
-                        })];
+                    case 0:
+                        productid = '1';
+                        quantity = '15';
+                        userid = '2';
+                        status = 'active';
+                        return [4 /*yield*/, ordermodel.createOrder(productid, quantity, userid, status)];
                     case 1:
                         result = _a.sent();
                         expect(result).toEqual({

@@ -12,7 +12,7 @@ describe('Test product model', () => {
       expect(productmodel.createProduct).toBeDefined()
     })
     it('should find get products method', () => {
-      expect(productmodel.getMeny).toBeDefined()
+      expect(productmodel.getMany).toBeDefined()
     })
     it('should find get one product method', () => {
       expect(productmodel.getOne).toBeDefined()
@@ -36,10 +36,9 @@ describe('Test product model', () => {
     })
 
     it('test create product method', async () => {
-      const result = await productmodel.createProduct({
-        name: 'phone',
-        price: 1850
-      })
+      const name = 'phone'
+      const price = 1850
+      const result = await productmodel.createProduct(name, price)
       expect(result).toEqual({
         id: 2,
         name: 'phone',
@@ -47,7 +46,7 @@ describe('Test product model', () => {
       })
     })
     it('test get products method', async () => {
-      const results = await productmodel.getMeny()
+      const results = await productmodel.getMany()
       expect(results.length).toBeGreaterThan(0)
     })
     it('test get one product', async () => {
@@ -55,11 +54,10 @@ describe('Test product model', () => {
       expect(result.name).toBe('phone')
     })
     it('should update product and return the new one', async () => {
-      const updatedProduct = await productmodel.updateOne({
-        id: 2,
-        name: 'newPhone',
-        price: 2000
-      })
+      const id = '2'
+      const name = 'newPhone'
+      const price = 2000
+      const updatedProduct = await productmodel.updateOne(name, price, id)
       expect(updatedProduct.name).toBe('newPhone')
       expect(updatedProduct.price).toBe(2000)
     })

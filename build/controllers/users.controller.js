@@ -56,27 +56,21 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var config_1 = __importDefault(require("../config"));
 var usermodel = new users_model_1.default();
 var createUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newUser, token, error_1;
+    var firstname, lastname, password, newUser, token, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                user = {
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    password: req.body.password
-                };
+                firstname = req.body.firstname;
+                lastname = req.body.lastname;
+                password = req.body.password;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, usermodel.createUser(user)];
+                return [4 /*yield*/, usermodel.createUser(firstname, lastname, password)];
             case 2:
                 newUser = _a.sent();
                 token = jsonwebtoken_1.default.sign({ newUser: newUser }, config_1.default.token);
-                res.json({
-                    message: 'user created successfully',
-                    data: __assign({}, newUser),
-                    token: { token: token }
-                });
+                res.json(token);
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
@@ -93,7 +87,7 @@ var getMany = function (req, res, next) { return __awaiter(void 0, void 0, void 
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, usermodel.getMeny()];
+                return [4 /*yield*/, usermodel.getMany()];
             case 1:
                 users = _a.sent();
                 res.json(users);
@@ -108,12 +102,13 @@ var getMany = function (req, res, next) { return __awaiter(void 0, void 0, void 
 }); };
 exports.getMany = getMany;
 var getOne = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, error_3;
+    var id, user, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, usermodel.getOne(req.params.id)];
+                id = req.params.id;
+                return [4 /*yield*/, usermodel.getOne(id)];
             case 1:
                 user = _a.sent();
                 res.json(user);
@@ -128,26 +123,21 @@ var getOne = function (req, res, next) { return __awaiter(void 0, void 0, void 0
 }); };
 exports.getOne = getOne;
 var updateOne = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newUser, error_4;
+    var id, firstname, lastname, password, newUser, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                user = {
-                    id: parseInt(req.params.id),
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    password: req.body.password
-                };
+                id = req.params.id;
+                firstname = req.body.firstname;
+                lastname = req.body.lastname;
+                password = req.body.password;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, usermodel.updateOne(user)];
+                return [4 /*yield*/, usermodel.updateOne(firstname, lastname, password, id)];
             case 2:
                 newUser = _a.sent();
-                res.json({
-                    message: 'updated successfully',
-                    data: __assign({}, newUser)
-                });
+                res.json(newUser);
                 return [3 /*break*/, 4];
             case 3:
                 error_4 = _a.sent();

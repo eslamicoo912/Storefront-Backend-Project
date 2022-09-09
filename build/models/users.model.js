@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -43,16 +62,17 @@ exports.hashPassword = void 0;
 /* eslint-disable @typescript-eslint/no-empty-function */
 var database_1 = __importDefault(require("../database"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
+var userQueries = __importStar(require("../database/queries/user.queries"));
 var config_1 = __importDefault(require("../config"));
 var hashPassword = function (password) {
-    var salt = parseInt(config_1.default.salt, 10);
-    return bcrypt_1.default.hashSync("".concat(password).concat(config_1.default.pepper), salt);
+    return bcrypt_1.default.hashSync("".concat(password).concat(config_1.default.pepper), parseInt(config_1.default.salt, 10));
 };
 exports.hashPassword = hashPassword;
 var UserModel = /** @class */ (function () {
     function UserModel() {
     }
-    UserModel.prototype.createUser = function (u) {
+    // function to run the query that create a new user in the database
+    UserModel.prototype.createUser = function (firstname, lastname, password) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_1;
             return __generator(this, function (_a) {
@@ -62,12 +82,8 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = "INSERT INTO users (firstName,lastName,password) VALUES($1, $2, $3) RETURNING *";
-                        return [4 /*yield*/, connection.query(sql, [
-                                u.firstname,
-                                u.lastname,
-                                (0, exports.hashPassword)(u.password)
-                            ])];
+                        sql = userQueries.createUser;
+                        return [4 /*yield*/, connection.query(sql, [firstname, lastname, (0, exports.hashPassword)(password)])];
                     case 2:
                         result = _a.sent();
                         connection.release();
@@ -80,7 +96,8 @@ var UserModel = /** @class */ (function () {
             });
         });
     };
-    UserModel.prototype.getMeny = function () {
+    // function to run the query that get all users from the database
+    UserModel.prototype.getMany = function () {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_2;
             return __generator(this, function (_a) {
@@ -90,7 +107,7 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = "SELECT id,firstName,lastName FROM users";
+                        sql = userQueries.getMany;
                         return [4 /*yield*/, connection.query(sql)];
                     case 2:
                         result = _a.sent();
@@ -104,6 +121,7 @@ var UserModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that get a specific user from the database
     UserModel.prototype.getOne = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_3;
@@ -114,7 +132,7 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT id,firstName,lastName FROM users WHERE id=$1';
+                        sql = userQueries.getOne;
                         return [4 /*yield*/, connection.query(sql, [id])];
                     case 2:
                         result = _a.sent();
@@ -128,7 +146,8 @@ var UserModel = /** @class */ (function () {
             });
         });
     };
-    UserModel.prototype.updateOne = function (u) {
+    // function to run the query that update user in the database
+    UserModel.prototype.updateOne = function (firstname, lastname, password, id) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_4;
             return __generator(this, function (_a) {
@@ -138,13 +157,8 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'UPDATE users SET firstName=$1,lastName=$2,password=$3 WHERE id=$4 RETURNING id,firstName,lastName';
-                        return [4 /*yield*/, connection.query(sql, [
-                                u.firstname,
-                                u.lastname,
-                                (0, exports.hashPassword)(u.password),
-                                u.id
-                            ])];
+                        sql = userQueries.updateOne;
+                        return [4 /*yield*/, connection.query(sql, [firstname, lastname, (0, exports.hashPassword)(password), id])];
                     case 2:
                         result = _a.sent();
                         connection.release();
@@ -157,6 +171,7 @@ var UserModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that delete user from the database
     UserModel.prototype.deleteOne = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_5;
@@ -167,7 +182,7 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'DELETE FROM users WHERE id=$1 RETURNING id,firstName,lastName';
+                        sql = userQueries.deleteOne;
                         return [4 /*yield*/, connection.query(sql, [id])];
                     case 2:
                         result = _a.sent();
@@ -181,6 +196,7 @@ var UserModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that check if the user exists in the database
     UserModel.prototype.authenticate = function (firstName, password) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, hashPassword_1, isValidPassword, userInfo, error_6;
@@ -191,7 +207,7 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT password from users WHERE firstName=$1';
+                        sql = userQueries.authenticate;
                         return [4 /*yield*/, connection.query(sql, [firstName])];
                     case 2:
                         result = _a.sent();

@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,10 +60,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-empty-function */
 var database_1 = __importDefault(require("../database"));
+var orderQueries = __importStar(require("../database/queries/order.queries"));
 var OrderModel = /** @class */ (function () {
     function OrderModel() {
     }
-    OrderModel.prototype.createOrder = function (o) {
+    // function to run the query that create a new order in the database
+    OrderModel.prototype.createOrder = function (productid, quantity, userid, status) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_1;
             return __generator(this, function (_a) {
@@ -54,8 +75,8 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'INSERT INTO orders(productId,quantity,userId,status) VALUES($1,$2,$3,$4) RETURNING *';
-                        return [4 /*yield*/, connection.query(sql, [o.productid, o.quantity, o.userid, o.status])];
+                        sql = orderQueries.createOrder;
+                        return [4 /*yield*/, connection.query(sql, [productid, quantity, userid, status])];
                     case 2:
                         result = _a.sent();
                         connection.release();
@@ -68,6 +89,7 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that get all orders form the database
     OrderModel.prototype.getMany = function () {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_2;
@@ -78,7 +100,7 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT * FROM orders';
+                        sql = orderQueries.getMany;
                         return [4 /*yield*/, connection.query(sql)];
                     case 2:
                         result = _a.sent();
@@ -92,6 +114,7 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that create a specific order from the database
     OrderModel.prototype.getOne = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_3;
@@ -102,7 +125,7 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT * FROM Orders WHERE id=$1';
+                        sql = orderQueries.getOne;
                         return [4 /*yield*/, connection.query(sql, [id])];
                     case 2:
                         result = _a.sent();
@@ -116,7 +139,8 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
-    OrderModel.prototype.updateOne = function (o) {
+    // function to run the query that update an order in the database
+    OrderModel.prototype.updateOne = function (productid, quantity, userid, id, status) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_4;
             return __generator(this, function (_a) {
@@ -126,14 +150,8 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'UPDATE Orders SET productId=$1,quantity=$2,userId=$3,status=$4 WHERE id=$4 RETURNING *';
-                        return [4 /*yield*/, connection.query(sql, [
-                                o.productid,
-                                o.quantity,
-                                o.userid,
-                                o.status,
-                                o.id
-                            ])];
+                        sql = orderQueries.updateOne;
+                        return [4 /*yield*/, connection.query(sql, [productid, quantity, userid, status, id])];
                     case 2:
                         result = _a.sent();
                         connection.release();
@@ -146,6 +164,7 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that delete an order from the database
     OrderModel.prototype.deleteOne = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, error_5;
@@ -156,7 +175,7 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'DELETE FROM Orders WHERE id=$1 RETURNING *';
+                        sql = orderQueries.deleteOne;
                         return [4 /*yield*/, connection.query(sql, [id])];
                     case 2:
                         result = _a.sent();
@@ -170,6 +189,7 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
+    // function to run the query that add a new product to a specific order in the database
     OrderModel.prototype.addProduct = function (quantity, orderid, productid) {
         return __awaiter(this, void 0, void 0, function () {
             var connection, sql, result, order, error_6;
@@ -180,7 +200,7 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'INSERT INTO order_products (quantity , orderid , productid) VALUES ($1, $2, $3) RETURNING *';
+                        sql = orderQueries.addProduct;
                         return [4 /*yield*/, connection.query(sql, [quantity, orderid, productid])];
                     case 2:
                         result = _a.sent();

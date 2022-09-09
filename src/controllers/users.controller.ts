@@ -1,25 +1,18 @@
 import { NextFunction, Request, Response } from 'express'
 import UserModel from '../models/users.model'
-import User from '../types/user.type'
 import jwt from 'jsonwebtoken'
 import config from '../config'
 
 const usermodel = new UserModel()
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  const user: User = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    password: req.body.password
-  }
+  const firstname = req.body.firstname
+  const lastname = req.body.lastname
+  const password = req.body.password
   try {
-    const newUser = await usermodel.createUser(user)
+    const newUser = await usermodel.createUser(firstname, lastname, password)
     const token = jwt.sign({ newUser }, config.token as unknown as string)
-    res.json({
-      message: 'user created successfully',
-      data: { ...newUser },
-      token: { token }
-    })
+    res.json(token)
   } catch (error) {
     next(error)
   }
@@ -27,7 +20,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 
 export const getMany = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await usermodel.getMeny()
+    const users = await usermodel.getMany()
     res.json(users)
   } catch (error) {
     next(error)
@@ -36,7 +29,8 @@ export const getMany = async (req: Request, res: Response, next: NextFunction) =
 
 export const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await usermodel.getOne(req.params.id)
+    const id = req.params.id
+    const user = await usermodel.getOne(id)
     res.json(user)
   } catch (error) {
     next(error)
@@ -44,19 +38,14 @@ export const getOne = async (req: Request, res: Response, next: NextFunction) =>
 }
 
 export const updateOne = async (req: Request, res: Response, next: NextFunction) => {
-  const user: User = {
-    id: parseInt(req.params.id),
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    password: req.body.password
-  }
+  const id = req.params.id
+  const firstname = req.body.firstname
+  const lastname = req.body.lastname
+  const password = req.body.password
 
   try {
-    const newUser = await usermodel.updateOne(user)
-    res.json({
-      message: 'updated successfully',
-      data: { ...newUser }
-    })
+    const newUser = await usermodel.updateOne(firstname, lastname, password, id)
+    res.json(newUser)
   } catch (error) {
     next(error)
   }

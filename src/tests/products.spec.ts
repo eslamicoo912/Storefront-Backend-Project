@@ -40,7 +40,7 @@ describe('Test product model', () => {
       const price = 1850
       const result = await productmodel.createProduct(name, price)
       expect(result).toEqual({
-        id: 2,
+        id: 3,
         name: 'phone',
         price: 1850
       })

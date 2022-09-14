@@ -149,14 +149,14 @@ describe('Test orders model', function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, ordermodel.getOne('2')];
+                    case 0: return [4 /*yield*/, ordermodel.getOne('1')];
                     case 1:
                         result = _a.sent();
                         expect(result).toEqual({
-                            id: 2,
+                            id: 1,
                             productid: 1,
                             quantity: 15,
-                            userid: 1,
+                            userid: 2,
                             status: 'active'
                         });
                         return [2 /*return*/];

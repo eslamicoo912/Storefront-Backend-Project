@@ -32,7 +32,7 @@
 
 Now , we should create the dev and test database.
 
-connect to the default postgres database as the server`s root user psql -U postgres In psql run the following to create the dev and test database `CREATE DATABASE store_db;` `CREATE DATABASE store_test;`
+connect to the default postgres database as the server's root user psql -U postgres In psql run the following to create the dev and test database `CREATE DATABASE store_db;` `CREATE DATABASE store_test;`
 
 ### Migration databse
 

@@ -95,7 +95,7 @@ describe('Test product model', function () {
                     case 1:
                         result = _a.sent();
                         expect(result).toEqual({
-                            id: 1,
+                            id: 3,
                             name: 'phone',
                             price: 1850
                         });

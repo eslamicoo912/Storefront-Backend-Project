@@ -4,9 +4,9 @@ import { validateToken } from '../../middleware/authentication.middleware'
 
 const routes = Router()
 
-routes.post('/', validateToken, controllers.createUser)
-routes.get('/', controllers.authenticate, controllers.getMany)
-routes.get('/:id', controllers.authenticate, controllers.getOne)
+routes.post('/', controllers.createUser)
+routes.get('/', validateToken, controllers.getMany)
+routes.get('/:id', validateToken, controllers.getOne)
 routes.patch('/:id', controllers.updateOne)
 routes.delete('/:id', controllers.deleteOne)
 
